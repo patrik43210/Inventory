@@ -71,6 +71,11 @@ export default function ProductsPage() {
     fetchProducts();
   };
 
+  const handleDelete = async (id: number) => {
+    await supabase.from('products').delete().eq('id', id);
+    fetchProducts();
+  };
+
   return (
     <div>
       <h1 className="text-2xl mb-4">Products</h1>
@@ -84,8 +89,28 @@ export default function ProductsPage() {
       </form>
       <ul className="space-y-2">
         {products.map((p) => (
-          <li key={p.id} className="border p-2 flex justify-between">
-            <span>{p.name} ({p.quantity})</span>
+          <li key={p.id} className="border p-2 flex flex-col gap-1">
+            {p.image_url && (
+              <img src={p.image_url} alt={p.name} className="w-32 mb-2" />
+            )}
+            <span className="font-semibold">{p.name}</span>
+            <span>Qty: {p.quantity}</span>
+            <span>Price: £{p.price}</span>
+            <span>Cost: £{p.cost}</span>
+            <div className="flex gap-2 mt-2">
+              <a href={`/products/${p.id}/sell`} className="underline">
+                Sell
+              </a>
+              <a href={`/products/${p.id}/edit`} className="underline">
+                Edit
+              </a>
+              <button
+                onClick={() => handleDelete(p.id)}
+                className="underline text-red-600"
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
