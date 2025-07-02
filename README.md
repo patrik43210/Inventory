@@ -1,6 +1,6 @@
 # Inventory Next.js App
 
-This is a rewrite of the original inventory management app using Next.js App Router and Supabase. It supports authentication, product management, sales logs and links per user.
+This is a rewrite of the original inventory management app using Next.js App Router and Supabase. It supports authentication, product management, sales logs and links per user. The codebase uses TypeScript and organizes logic under `app/`, `components/`, `context/` and `lib/`.
 
 ## Environment Variables
 Copy `.env.example` to `.env.local` and fill in your Supabase project credentials.

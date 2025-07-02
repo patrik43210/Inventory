@@ -1,11 +1,7 @@
 'use client'
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+import { Session } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabaseClient';
 
 interface AuthContextType {
   session: Session | null;
@@ -13,7 +9,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({ session: null });
 
-export default function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {

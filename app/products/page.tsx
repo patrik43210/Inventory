@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession, useSupabase } from '../../components/AuthProvider';
+import { useSession, useSupabase } from '../../context/AuthContext';
 
 interface Product {
   id: number;
