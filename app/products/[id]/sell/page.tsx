@@ -9,6 +9,7 @@ interface Product {
   quantity: number;
   price: number;
   cost: number;
+  profit: number;
 }
 
 export default function SellProductPage({ params }: { params: { id: string } }) {
@@ -18,6 +19,8 @@ export default function SellProductPage({ params }: { params: { id: string } }) 
   const [product, setProduct] = useState<Product | null>(null);
   const [units, setUnits] = useState(1);
   const [sellPrice, setSellPrice] = useState(0);
+  const [overrideCost, setOverrideCost] = useState(false);
+  const [newCost, setNewCost] = useState(0);
 
   useEffect(() => {
     if (!session) {
@@ -43,15 +46,21 @@ export default function SellProductPage({ params }: { params: { id: string } }) 
     e.preventDefault();
     if (!product) return;
     if (units <= 0 || units > product.quantity) return;
+    const costForSale = overrideCost ? newCost : product.cost;
+    const profit = (sellPrice - costForSale) * units;
     await supabase.from('sales').insert({
       user_id: session!.user.id,
       product_id: product.id,
-      quantity: units,
-      price: sellPrice,
+      product_name: product.name,
+      units,
+      sell_price: sellPrice,
+      cost: product.cost,
+      new_cost: overrideCost ? newCost : null,
+      profit,
     });
     await supabase
       .from('products')
-      .update({ quantity: product.quantity - units })
+      .update({ quantity: product.quantity - units, profit: product.profit + profit })
       .eq('id', product.id);
     router.push('/products');
   };
@@ -63,6 +72,19 @@ export default function SellProductPage({ params }: { params: { id: string } }) 
       <h1 className="text-2xl mb-4">Sell {product.name}</h1>
       <p className="mb-2">In Stock: {product.quantity}</p>
       <form onSubmit={handleSell} className="flex flex-col gap-2">
+        <label className="flex items-center gap-2">
+          <input type="checkbox" checked={overrideCost} onChange={() => setOverrideCost(!overrideCost)} />
+          Use different purchase price
+        </label>
+        {overrideCost && (
+          <input
+            className="border p-2"
+            type="number"
+            value={newCost}
+            onChange={(e) => setNewCost(Number(e.target.value))}
+            placeholder="New purchase cost"
+          />
+        )}
         <input
           className="border p-2"
           type="number"
@@ -84,3 +106,4 @@ export default function SellProductPage({ params }: { params: { id: string } }) 
     </div>
   );
 }
+
