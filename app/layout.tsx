@@ -1,6 +1,6 @@
 import './globals.css';
 import { ReactNode } from 'react';
-import AuthProvider from '../components/AuthProvider';
+import { AuthProvider } from '../context/AuthContext';
 import Nav from '../components/Nav';
 import ThemeToggle from '../components/ThemeToggle';
 

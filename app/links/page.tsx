@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { useSession, useSupabase } from '../../components/AuthProvider';
+import { useSession, useSupabase } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 interface LinkItem {

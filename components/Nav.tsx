@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import { useSession, useSupabase } from './AuthProvider';
+import { useSession, useSupabase } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function Nav() {

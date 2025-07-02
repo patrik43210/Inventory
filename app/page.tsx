@@ -1,5 +1,5 @@
 'use client'
-import { useSession } from '../components/AuthProvider';
+import { useSession } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
